@@ -44,5 +44,27 @@ Painel admin: http://localhost:8000/admin
 ## Testes
 
 ```bash
-pytest
+# Rodar todos os testes
+poetry run python manage.py test
+
+# Rodar com output detalhado
+poetry run python manage.py test --verbosity=2
+
+# Rodar por app
+poetry run python manage.py test product
+poetry run python manage.py test order
+
+# Rodar uma classe específica
+poetry run python manage.py test product.tests.CategorySerializerTest
+poetry run python manage.py test product.tests.ProductSerializerTest
+poetry run python manage.py test order.tests.OrderSerializerTest
 ```
+
+### Cobertura dos testes
+
+**product**
+- `CategorySerializerTest` — valida campos e conteúdo do `CategorySerializer`
+- `ProductSerializerTest` — valida campos, preço e category aninhado no `ProductSerializer`
+
+**order**
+- `OrderSerializerTest` — valida campos, product aninhado, cálculo do `total` com um e múltiplos produtos
