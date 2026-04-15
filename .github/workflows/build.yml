@@ -32,5 +32,11 @@ jobs:
       run: poetry install
 
     - name: Test
+      env:
+        SECRET_KEY: "django-insecure-ci-secret-key-for-testing-only"
+        DEBUG: "1"
+        DJANGO_ALLOWED_HOSTS: "localhost"
+        SQL_ENGINE: "django.db.backends.sqlite3"
+        SQL_DATABASE: "db.sqlite3"
       run: |
         poetry run python manage.py test
