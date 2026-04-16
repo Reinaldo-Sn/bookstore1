@@ -17,13 +17,12 @@ Including another URLconf
 
 from django.conf import settings
 from django.contrib import admin
-from django.views.generic import RedirectView
 from bookstore import views
 from django.urls import include, path, re_path
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="/bookstore/v1/order/", permanent=False)),
+    path("", views.hello_world, name="home"),
     path("admin/", admin.site.urls),
     re_path("bookstore/(?P<version>(v1|v2))/", include("order.urls")),
     re_path("bookstore/(?P<version>(v1|v2))/", include("product.urls")),
