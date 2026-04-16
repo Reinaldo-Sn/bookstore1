@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-2z6f1i1zsj(v4a&rg&w2^_znrh3g7pf2s1&qo$o%jpti8hb9m="
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-2z6f1i1zsj(v4a&rg&w2^_znrh3g7pf2s1&qo$o%jpti8hb9m=")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'reinaldo.pythonanywhere.com']
 
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "rest_framework.authtoken",
-    "debug_toolbar",
     "order",
     "product",
 ]
@@ -65,7 +64,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "bookstore.urls"
@@ -89,7 +87,7 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATIC_FILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -146,7 +144,8 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-2z6f1i1zsj(v4a&rg&w2^_znrh3g7pf2s1&qo$o%jpti8hb9m=")
+DEBUG = bool(int(os.environ.get('DEBUG', '0')))
 
-DEBUG = int(os.environ.get("DEBUG", default=0))
-
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
